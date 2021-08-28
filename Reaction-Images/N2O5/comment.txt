@@ -1,0 +1,3 @@
+The decomposition of N2O5 to NO2 and O2 is first order with a rate constant of 4.8 x 10-4 s-1
+
+Source: A problem to consider in https://ww2.odu.edu/~ppleban/pdf/Zumdahl12pt1.pdf
