@@ -42,26 +42,14 @@ function ClearCharts(){
 function InitCharts(){
     let myMolChart = document.createElement('canvas');
     myMolChart.id = "myMolChart";
-    myMolChart.style.maxWidth = "750px";
-    myMolChart.style.maxHeight = "375px";
-    myMolChart.style.margin = "1em";
-    myMolChart.style.border = "1px solid gray";
     myMolChart.width = "750";
     myMolChart.height = "375";
     let myConcChart = document.createElement('canvas');
     myConcChart.id = "myConcChart";
-    myConcChart.style.maxWidth = "750px";
-    myConcChart.style.maxHeight = "375px";
-    myConcChart.style.margin = "1em";
-    myConcChart.style.border = "1px solid gray";
     myConcChart.width = "750";
     myConcChart.height = "375";
     let myUChart = document.createElement('canvas');
     myUChart.id = "myUChart";
-    myUChart.style.maxWidth = "750px";
-    myUChart.style.maxHeight = "375px";
-    myUChart.style.margin = "1em";
-    myUChart.style.border = "1px solid gray";
     myUChart.width = "750";
     myUChart.height = "375";
     document.getElementById('charts').appendChild(myMolChart);

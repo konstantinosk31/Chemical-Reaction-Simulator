@@ -24,9 +24,10 @@
     <head>
         <title>Chemical Reaction Simulator</title>
         <link rel="shortcut icon" href="favicon.ico" type="image/ico" />
+        <link rel="stylesheet" type="text/css" href="external.css"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
-    <body onload="Load()" style="background-color: lightgray;"> <center>
+    <body onload="Load()"> <center>
 
         <h1>Welcome to the Chemical Reaction Simulator!</h1>
         <h3>Insert a chemical reaction and the website will output n(t), C(t) (if appropriate) and U(t) plots by simulating the reaction.</h3>
@@ -36,14 +37,14 @@
 
         </div>
         <div>
-            <button onclick="AddElement(true);" style="margin: 8px 4px;">Add Reactant</button>
-            <button onclick="RemoveElement(true);" style="margin: 8px 4px;">Remove Reactant</button>
-            <select onclick="InitIrreversible(this.selectedIndex);" style="margin: 8px 4px;">
+            <button onclick="AddElement(true);">Add Reactant</button>
+            <button onclick="RemoveElement(true);">Remove Reactant</button>
+            <select onclick="InitIrreversible(this.selectedIndex);">
                 <option value="<=>">⇔</option>
                 <option value="->">→</option>
             </select>
-            <button onclick="AddElement(false);" style="margin: 8px 4px;">Add Product</button>
-            <button onclick="RemoveElement(false);" style="margin: 8px 4px;">Remove Product</button>
+            <button onclick="AddElement(false);">Add Product</button>
+            <button onclick="RemoveElement(false);">Remove Product</button>
         </div>
         <div id="products">
         </div>
@@ -65,7 +66,7 @@
 
         </div>
     </center></body>
-    <footer style="line-height: 1; margin-top: 140px; margin-bottom: 28px;"><center><small>
+    <footer><center><small>
         Copyright 2021 Konstantinos Kritharidis<br><br>
 
         Contribute to Chemical Reaction Simulator on <a href="https://github.com/konstantinosk31/Chemical-Reaction-Simulator" target="_blank">GitHub</a>.<br><br>

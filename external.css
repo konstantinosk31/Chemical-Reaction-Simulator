@@ -1,0 +1,20 @@
+body{
+    background-color: lightgray;
+}
+
+button{
+    margin: 8px 4px;
+}
+
+footer{
+    line-height: 1;
+    margin-top: 140px;
+    margin-bottom: 28px;
+}
+
+canvas{
+    max-width : 750px;
+    max-height : 375px;
+    margin : 1em;
+    border : 1px solid gray;
+}
