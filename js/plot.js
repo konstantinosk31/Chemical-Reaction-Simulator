@@ -105,27 +105,35 @@ function PlotMoles(){
                 }
             },
             scales: {
-                yAxes: [{
+                y: {
                     beginAtZero: true,
-                    scaleLabel:{
-                        labelString: "Amount of substance - n (mol)",
+                    title: {
+                        text: "Amount of substance - n (mol)",
                         display: true,
-                        fontSize: 14
+                        font: {
+                            size: 14
+                        }
                     },
-                }],
-                xAxes: [{
-                    scaleLabel: {
-                        labelString: "Time - t (s)",
+                },
+                x: {
+                    title: {
+                        text: "Time - t (s)",
                         display: true,
-                        fontSize: 14
+                        font: {
+                            size: 14
+                        }
                     },
-                }]
+                }
             },
-            title: {
-                text: 'Amount of each substance during the chemical reaction',
-                display: true,
-                position: 'top',
-                fontSize: 16,
+            plugins: {
+                title: {
+                    text: 'Amount of each substance during the chemical reaction',
+                    display: true,
+                    position: 'top',
+                    font: {
+                        size: 16
+                    }
+                }
             }
         }
     });
@@ -177,27 +185,35 @@ function PlotConcentrations(){
                 }
             },
             scales: {
-                yAxes: [{
+                y: {
                     beginAtZero: true,
-                    scaleLabel:{
-                        labelString: "Concentration - C (M)",
+                    title: {
+                        text: "Concentration - C (M)",
                         display: true,
-                        fontSize: 14
+                        font: {
+                            size: 14
+                        }
                     },
-                }],
-                xAxes: [{
-                    scaleLabel: {
-                        labelString: "Time - t (s)",
+                },
+                x: {
+                    title: {
+                        text: "Time - t (s)",
                         display: true,
-                        fontSize: 14
+                        font: {
+                            size: 14
+                        }
                     },
-                }]
+                }
             },
-            title: {
-                text: 'Concentration of each substance during the chemical reaction',
-                display: true,
-                position: 'top',
-                fontSize: 16,
+            plugins: {
+                title: {
+                    text: 'Concentration of each substance during the chemical reaction',
+                    display: true,
+                    position: 'top',
+                    font: {
+                        size: 16
+                    }
+                }
             }
         }
     });
@@ -237,27 +253,35 @@ function PlotU(){
                 }
             },
             scales: {
-                yAxes: [{
+                y: {
                     beginAtZero: true,
-                    scaleLabel:{
-                        labelString: "Reaction Rate (M/s)",
+                    title: {
+                        text: "Reaction Rate (M/s)",
                         display: true,
-                        fontSize: 14
+                        font: {
+                            size: 14
+                        }
                     },
-                }],
-                xAxes: [{
-                    scaleLabel: {
-                        labelString: "Time - t (s)",
+                },
+                x: {
+                    title: {
+                        text: "Time - t (s)",
                         display: true,
-                        fontSize: 14
+                        font: {
+                            size: 14
+                        }
                     },
-                }]
+                }
             },
-            title: {
-                text: 'Reaction rate of both sides during the chemical reaction',
-                display: true,
-                position: 'top',
-                fontSize: 16,
+            plugins: {
+                title: {
+                    text: 'Reaction rate of both sides during the chemical reaction',
+                    display: true,
+                    position: 'top',
+                    font: {
+                        size: 16
+                    }
+                }
             }
         }
     });
