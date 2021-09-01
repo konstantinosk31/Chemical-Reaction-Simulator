@@ -64,12 +64,13 @@ function PlotMoles(){
     var datasets = [];
     var index = 0;
     datasets[index] = {
-        type: 'line',
+        type: 'scatter',
         label: reactants[0].name,
         data: reactants[0].mol,
         borderColor: colour[index%colour.length],
         backgroundColor: colour[index%colour.length],
         fill: false,
+        showLine: true
     }
     index++;
     for (var i = 1; i < Object.keys(reactants).length; i++){
@@ -79,6 +80,7 @@ function PlotMoles(){
             borderColor: colour[index%colour.length],
             backgroundColor: colour[index%colour.length],
             fill: false,
+            showLine: true
         }
         index++;
     }
@@ -89,11 +91,12 @@ function PlotMoles(){
             borderColor: colour[index%colour.length],
             backgroundColor: colour[index%colour.length],
             fill: false,
+            showLine: true
         }
         index++;
     }
     var myChart = new Chart(ctx, {
-        type: 'line',
+        type: 'scatter',
         data: {
             datasets: datasets,
             labels: time
@@ -144,12 +147,13 @@ function PlotConcentrations(){
     var datasets = [];
     var index = 0;
     datasets[index] = {
-        type: 'line',
+        type: 'scatter',
         label: reactants[0].name,
         data: reactants[0].conc,
         borderColor: colour[index%colour.length],
         backgroundColor: colour[index%colour.length],
         fill: false,
+        showLine: true
     }
     index++;
     for (var i = 1; i < Object.keys(reactants).length; i++){
@@ -159,6 +163,7 @@ function PlotConcentrations(){
             borderColor: colour[index%colour.length],
             backgroundColor: colour[index%colour.length],
             fill: false,
+            showLine: true
         }
         index++;
     }
@@ -169,11 +174,12 @@ function PlotConcentrations(){
             borderColor: colour[index%colour.length],
             backgroundColor: colour[index%colour.length],
             fill: false,
+            showLine: true
         }
         index++;
     }
     var myChart = new Chart(ctx, {
-        type: 'line',
+        type: 'scatter',
         data: {
             datasets: datasets,
             labels: time
@@ -224,12 +230,13 @@ function PlotU(){
     var datasets = [];
     var index = 0;
     datasets[index] = {
-        type: 'line',
+        type: 'scatter',
         label: "U1",
         data: _U1,
         borderColor: colour[index%colour.length],
         backgroundColor: colour[index%colour.length],
         fill: false,
+        showLine: true
     }
     index++;
     datasets[index] = {
@@ -238,10 +245,11 @@ function PlotU(){
         borderColor: colour[index%colour.length],
         backgroundColor: colour[index%colour.length],
         fill: false,
+        showLine: true
     }
     index++;
     var myChart = new Chart(ctx, {
-        type: 'line',
+        type: 'scatter',
         data: {
             datasets: datasets,
             labels: time
