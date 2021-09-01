@@ -27,16 +27,19 @@ function PlotCharts(){
     sim_num++;
     InitCharts();
     PlotMoles();
+    PlotMolBars();
     if(closed_container == 1){
         PlotConcentrations();
+        PlotConcBars();
     }
     PlotU();
 }
 
 function ClearCharts(){
-    document.getElementById('charts').removeChild(document.getElementById('charts').lastChild);
-    document.getElementById('charts').removeChild(document.getElementById('charts').lastChild);
-    document.getElementById('charts').removeChild(document.getElementById('charts').lastChild);
+    let parent = document.getElementById('charts');
+    while (parent.firstChild){
+        parent.removeChild(parent.firstChild);
+    }
 }
 
 function InitCharts(){
@@ -44,17 +47,27 @@ function InitCharts(){
     myMolChart.id = "myMolChart";
     myMolChart.width = "750";
     myMolChart.height = "375";
+    let myMolBars = document.createElement('canvas');
+    myMolBars.id = "myMolBars";
+    myMolBars.width = "750";
+    myMolBars.height = "375";
     let myConcChart = document.createElement('canvas');
     myConcChart.id = "myConcChart";
     myConcChart.width = "750";
     myConcChart.height = "375";
+    let myConcBars = document.createElement('canvas');
+    myConcBars.id = "myConcBars";
+    myConcBars.width = "750";
+    myConcBars.height = "375";
     let myUChart = document.createElement('canvas');
     myUChart.id = "myUChart";
     myUChart.width = "750";
     myUChart.height = "375";
     document.getElementById('charts').appendChild(myMolChart);
+    document.getElementById('charts').appendChild(myMolBars);
     if(closed_container){
         document.getElementById('charts').appendChild(myConcChart);
+        document.getElementById('charts').appendChild(myConcBars);
     }
     document.getElementById('charts').appendChild(myUChart);
 }
@@ -142,6 +155,83 @@ function PlotMoles(){
     });
 }
 
+function PlotMolBars(){
+    var ctx = document.getElementById('myMolBars').getContext('2d');
+    var datasets = [];
+    var index = 0;
+    datasets[index] = {
+        type: 'bar',
+        label: reactants[0].name,
+        data: [reactants[0].mol[0], reactants[0].mol[end_it-1]],
+        borderColor: colour[index%colour.length],
+        backgroundColor: colour[index%colour.length],
+    }
+    index++;
+    for (var i = 1; i < Object.keys(reactants).length; i++){
+        datasets[index] = {
+            label: reactants[i].name,
+            data: [reactants[i].mol[0], reactants[i].mol[end_it-1]],
+            borderColor: colour[index%colour.length],
+            backgroundColor: colour[index%colour.length],
+        }
+        index++;
+    }
+    for (var i = 0; i < Object.keys(products).length; i++){
+        datasets[index] = {
+            label: products[i].name,
+            data: [products[i].mol[0], products[i].mol[end_it-1]],
+            borderColor: colour[index%colour.length],
+            backgroundColor: colour[index%colour.length],
+        }
+        index++;
+    }
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            datasets: datasets,
+            labels: ["Initial", "Final"]
+        },
+        options: {
+            elements: {
+                point:{
+                    radius: 0
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        text: "Amount of substance - n (mol)",
+                        display: true,
+                        font: {
+                            size: 14
+                        }
+                    },
+                },
+                x: {
+                    title: {
+                        text: "State",
+                        display: true,
+                        font: {
+                            size: 14
+                        }
+                    },
+                }
+            },
+            plugins: {
+                title: {
+                    text: 'Amount of each substance in the initial and the final state',
+                    display: true,
+                    position: 'top',
+                    font: {
+                        size: 16
+                    }
+                }
+            }
+        }
+    });
+}
+
 function PlotConcentrations(){
     var ctx = document.getElementById('myConcChart').getContext('2d');
     var datasets = [];
@@ -214,6 +304,83 @@ function PlotConcentrations(){
             plugins: {
                 title: {
                     text: 'Concentration of each substance during the chemical reaction',
+                    display: true,
+                    position: 'top',
+                    font: {
+                        size: 16
+                    }
+                }
+            }
+        }
+    });
+}
+
+function PlotConcBars(){
+    var ctx = document.getElementById('myConcBars').getContext('2d');
+    var datasets = [];
+    var index = 0;
+    datasets[index] = {
+        type: 'bar',
+        label: reactants[0].name,
+        data: [reactants[0].conc[0], reactants[0].conc[end_it-1]],
+        borderColor: colour[index%colour.length],
+        backgroundColor: colour[index%colour.length],
+    }
+    index++;
+    for (var i = 1; i < Object.keys(reactants).length; i++){
+        datasets[index] = {
+            label: reactants[i].name,
+            data: [reactants[i].conc[0], reactants[i].conc[end_it-1]],
+            borderColor: colour[index%colour.length],
+            backgroundColor: colour[index%colour.length],
+        }
+        index++;
+    }
+    for (var i = 0; i < Object.keys(products).length; i++){
+        datasets[index] = {
+            label: products[i].name,
+            data: [products[i].conc[0], products[i].conc[end_it-1]],
+            borderColor: colour[index%colour.length],
+            backgroundColor: colour[index%colour.length],
+        }
+        index++;
+    }
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            datasets: datasets,
+            labels: ["Initial", "Final"]
+        },
+        options: {
+            elements: {
+                point:{
+                    radius: 0
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        text: "Concentration - C (M)",
+                        display: true,
+                        font: {
+                            size: 14
+                        }
+                    },
+                },
+                x: {
+                    title: {
+                        text: "State",
+                        display: true,
+                        font: {
+                            size: 14
+                        }
+                    },
+                }
+            },
+            plugins: {
+                title: {
+                    text: 'Concentration of each substance in the initial and the final state',
                     display: true,
                     position: 'top',
                     font: {
