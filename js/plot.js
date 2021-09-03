@@ -33,6 +33,8 @@ function PlotCharts(){
         PlotConcBars();
     }
     PlotU();
+    //PlotDt();
+    //PlotTotalU();
 }
 
 function ClearCharts(){
@@ -63,6 +65,14 @@ function InitCharts(){
     myUChart.id = "myUChart";
     myUChart.width = "750";
     myUChart.height = "375";
+    /*let myDtChart = document.createElement('canvas');
+    myDtChart.id = "myDtChart";
+    myDtChart.width = "750";
+    myDtChart.height = "375";
+    let myTotalUChart = document.createElement('canvas');
+    myTotalUChart.id = "myTotalUChart";
+    myTotalUChart.width = "750";
+    myTotalUChart.height = "375";*/
     document.getElementById('charts').appendChild(myMolChart);
     document.getElementById('charts').appendChild(myMolBars);
     if(closed_container){
@@ -70,6 +80,8 @@ function InitCharts(){
         document.getElementById('charts').appendChild(myConcBars);
     }
     document.getElementById('charts').appendChild(myUChart);
+    //document.getElementById('charts').appendChild(myDtChart);
+    //document.getElementById('charts').appendChild(myTotalUChart);
 }
 
 function PlotMoles(){
@@ -451,6 +463,130 @@ function PlotU(){
             plugins: {
                 title: {
                     text: 'Reaction rate of both sides during the chemical reaction',
+                    display: true,
+                    position: 'top',
+                    font: {
+                        size: 16
+                    }
+                }
+            }
+        }
+    });
+}
+
+function PlotDt(){
+    var ctx = document.getElementById('myDtChart').getContext('2d');
+    var datasets = [];
+    var iters = Array.from({length: end_it}, (_, i) => i + 1);
+    var index = 0;
+    datasets[index] = {
+        type: 'scatter',
+        label: "dt",
+        data: _dt,
+        borderColor: colour[index%colour.length],
+        backgroundColor: colour[index%colour.length],
+        fill: false,
+        showLine: true
+    }
+    index++;
+    var myChart = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+            datasets: datasets,
+            labels: iters
+        },
+        options: {
+            elements: {
+                point:{
+                    radius: 0
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        text: "dt (s)",
+                        display: true,
+                        font: {
+                            size: 14
+                        }
+                    },
+                },
+                x: {
+                    title: {
+                        text: "Iteration",
+                        display: true,
+                        font: {
+                            size: 14
+                        }
+                    },
+                }
+            },
+            plugins: {
+                title: {
+                    text: 'dt during the chemical reaction',
+                    display: true,
+                    position: 'top',
+                    font: {
+                        size: 16
+                    }
+                }
+            }
+        }
+    });
+}
+
+function PlotTotalU(){
+    var ctx = document.getElementById('myTotalUChart').getContext('2d');
+    var datasets = [];
+    var iters = Array.from({length: end_it}, (_, i) => i + 1);
+    var index = 0;
+    datasets[index] = {
+        type: 'scatter',
+        label: "Total U",
+        data: _U,
+        borderColor: colour[index%colour.length],
+        backgroundColor: colour[index%colour.length],
+        fill: false,
+        showLine: true
+    }
+    index++;
+    var myChart = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+            datasets: datasets,
+            labels: iters
+        },
+        options: {
+            elements: {
+                point:{
+                    radius: 0
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        text: "Total Reaction Rate (M/s)",
+                        display: true,
+                        font: {
+                            size: 14
+                        }
+                    },
+                },
+                x: {
+                    title: {
+                        text: "Iteration",
+                        display: true,
+                        font: {
+                            size: 14
+                        }
+                    },
+                }
+            },
+            plugins: {
+                title: {
+                    text: 'Total Reaction Rate during the chemical reaction',
                     display: true,
                     position: 'top',
                     font: {

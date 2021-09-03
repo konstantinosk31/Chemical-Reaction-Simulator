@@ -28,6 +28,7 @@ time = [];
 _dt = [];
 _U1 = [];
 _U2 = [];
+_U = [];
 
 function Load() {
     AddElement(true);
@@ -166,6 +167,7 @@ function Simulate() {
         _dt[it+1] = dt;
         _U1[it+1] = _U1[it];
         _U2[it+1] = _U2[it];
+        _U[it+1] = U1-U2;
         it += 1;
         if (it >= end_it-1){
             console.log("Stopped simulation.");
