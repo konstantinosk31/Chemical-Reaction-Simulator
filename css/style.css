@@ -14,3 +14,14 @@ footer {
     width: 100%;
 }
 .navbar-brand {float:none;}
+
+button{
+    margin: 8px 4px;
+}
+
+canvas{
+    max-width : 750px;
+    max-height : 375px;
+    margin : 1em;
+    border : 1px solid gray;
+}

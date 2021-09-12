@@ -27,48 +27,61 @@ function PlotCharts(){
     sim_num++;
     InitCharts();
     PlotMoles();
+    PlotMolBars();
     if(closed_container == 1){
         PlotConcentrations();
+        PlotConcBars();
     }
     PlotU();
+    //PlotDt();
+    //PlotTotalU();
 }
 
 function ClearCharts(){
-    document.getElementById('charts').removeChild(document.getElementById('charts').lastChild);
-    document.getElementById('charts').removeChild(document.getElementById('charts').lastChild);
-    document.getElementById('charts').removeChild(document.getElementById('charts').lastChild);
+    let parent = document.getElementById('charts');
+    while (parent.firstChild){
+        parent.removeChild(parent.firstChild);
+    }
 }
 
 function InitCharts(){
     let myMolChart = document.createElement('canvas');
     myMolChart.id = "myMolChart";
-    myMolChart.style.maxWidth = "750px";
-    myMolChart.style.maxHeight = "375px";
-    myMolChart.style.margin = "1em";
-    myMolChart.style.border = "1px solid gray";
     myMolChart.width = "750";
     myMolChart.height = "375";
+    let myMolBars = document.createElement('canvas');
+    myMolBars.id = "myMolBars";
+    myMolBars.width = "750";
+    myMolBars.height = "375";
     let myConcChart = document.createElement('canvas');
     myConcChart.id = "myConcChart";
-    myConcChart.style.maxWidth = "750px";
-    myConcChart.style.maxHeight = "375px";
-    myConcChart.style.margin = "1em";
-    myConcChart.style.border = "1px solid gray";
     myConcChart.width = "750";
     myConcChart.height = "375";
+    let myConcBars = document.createElement('canvas');
+    myConcBars.id = "myConcBars";
+    myConcBars.width = "750";
+    myConcBars.height = "375";
     let myUChart = document.createElement('canvas');
     myUChart.id = "myUChart";
-    myUChart.style.maxWidth = "750px";
-    myUChart.style.maxHeight = "375px";
-    myUChart.style.margin = "1em";
-    myUChart.style.border = "1px solid gray";
     myUChart.width = "750";
     myUChart.height = "375";
+    /*let myDtChart = document.createElement('canvas');
+    myDtChart.id = "myDtChart";
+    myDtChart.width = "750";
+    myDtChart.height = "375";
+    let myTotalUChart = document.createElement('canvas');
+    myTotalUChart.id = "myTotalUChart";
+    myTotalUChart.width = "750";
+    myTotalUChart.height = "375";*/
     document.getElementById('charts').appendChild(myMolChart);
+    document.getElementById('charts').appendChild(myMolBars);
     if(closed_container){
         document.getElementById('charts').appendChild(myConcChart);
+        document.getElementById('charts').appendChild(myConcBars);
     }
     document.getElementById('charts').appendChild(myUChart);
+    //document.getElementById('charts').appendChild(myDtChart);
+    //document.getElementById('charts').appendChild(myTotalUChart);
 }
 
 function PlotMoles(){
@@ -76,12 +89,13 @@ function PlotMoles(){
     var datasets = [];
     var index = 0;
     datasets[index] = {
-        type: 'line',
+        type: 'scatter',
         label: reactants[0].name,
         data: reactants[0].mol,
         borderColor: colour[index%colour.length],
         backgroundColor: colour[index%colour.length],
         fill: false,
+        showLine: true
     }
     index++;
     for (var i = 1; i < Object.keys(reactants).length; i++){
@@ -91,6 +105,7 @@ function PlotMoles(){
             borderColor: colour[index%colour.length],
             backgroundColor: colour[index%colour.length],
             fill: false,
+            showLine: true
         }
         index++;
     }
@@ -101,11 +116,12 @@ function PlotMoles(){
             borderColor: colour[index%colour.length],
             backgroundColor: colour[index%colour.length],
             fill: false,
+            showLine: true
         }
         index++;
     }
     var myChart = new Chart(ctx, {
-        type: 'line',
+        type: 'scatter',
         data: {
             datasets: datasets,
             labels: time
@@ -117,27 +133,112 @@ function PlotMoles(){
                 }
             },
             scales: {
-                yAxes: [{
+                y: {
                     beginAtZero: true,
-                    scaleLabel:{
-                        labelString: "Amount of substance - n (mol)",
+                    title: {
+                        text: "Amount of substance - n (mol)",
                         display: true,
-                        fontSize: 14
+                        font: {
+                            size: 14
+                        }
                     },
-                }],
-                xAxes: [{
-                    scaleLabel: {
-                        labelString: "Time - t (s)",
+                },
+                x: {
+                    title: {
+                        text: "Time - t (s)",
                         display: true,
-                        fontSize: 14
+                        font: {
+                            size: 14
+                        }
                     },
-                }]
+                }
             },
-            title: {
-                text: 'Amount of each substance during the chemical reaction',
-                display: true,
-                position: 'top',
-                fontSize: 16,
+            plugins: {
+                title: {
+                    text: 'Amount of each substance during the chemical reaction',
+                    display: true,
+                    position: 'top',
+                    font: {
+                        size: 16
+                    }
+                }
+            }
+        }
+    });
+}
+
+function PlotMolBars(){
+    var ctx = document.getElementById('myMolBars').getContext('2d');
+    var datasets = [];
+    var index = 0;
+    datasets[index] = {
+        type: 'bar',
+        label: reactants[0].name,
+        data: [reactants[0].mol[0], reactants[0].mol[end_it-1]],
+        borderColor: colour[index%colour.length],
+        backgroundColor: colour[index%colour.length],
+    }
+    index++;
+    for (var i = 1; i < Object.keys(reactants).length; i++){
+        datasets[index] = {
+            label: reactants[i].name,
+            data: [reactants[i].mol[0], reactants[i].mol[end_it-1]],
+            borderColor: colour[index%colour.length],
+            backgroundColor: colour[index%colour.length],
+        }
+        index++;
+    }
+    for (var i = 0; i < Object.keys(products).length; i++){
+        datasets[index] = {
+            label: products[i].name,
+            data: [products[i].mol[0], products[i].mol[end_it-1]],
+            borderColor: colour[index%colour.length],
+            backgroundColor: colour[index%colour.length],
+        }
+        index++;
+    }
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            datasets: datasets,
+            labels: ["Initial", "Final"]
+        },
+        options: {
+            elements: {
+                point:{
+                    radius: 0
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        text: "Amount of substance - n (mol)",
+                        display: true,
+                        font: {
+                            size: 14
+                        }
+                    },
+                },
+                x: {
+                    title: {
+                        text: "State",
+                        display: true,
+                        font: {
+                            size: 14
+                        }
+                    },
+                }
+            },
+            plugins: {
+                title: {
+                    text: 'Amount of each substance in the initial and the final state',
+                    display: true,
+                    position: 'top',
+                    font: {
+                        size: 16
+                    }
+                }
             }
         }
     });
@@ -148,12 +249,13 @@ function PlotConcentrations(){
     var datasets = [];
     var index = 0;
     datasets[index] = {
-        type: 'line',
+        type: 'scatter',
         label: reactants[0].name,
         data: reactants[0].conc,
         borderColor: colour[index%colour.length],
         backgroundColor: colour[index%colour.length],
         fill: false,
+        showLine: true
     }
     index++;
     for (var i = 1; i < Object.keys(reactants).length; i++){
@@ -163,6 +265,7 @@ function PlotConcentrations(){
             borderColor: colour[index%colour.length],
             backgroundColor: colour[index%colour.length],
             fill: false,
+            showLine: true
         }
         index++;
     }
@@ -173,11 +276,12 @@ function PlotConcentrations(){
             borderColor: colour[index%colour.length],
             backgroundColor: colour[index%colour.length],
             fill: false,
+            showLine: true
         }
         index++;
     }
     var myChart = new Chart(ctx, {
-        type: 'line',
+        type: 'scatter',
         data: {
             datasets: datasets,
             labels: time
@@ -189,27 +293,112 @@ function PlotConcentrations(){
                 }
             },
             scales: {
-                yAxes: [{
+                y: {
                     beginAtZero: true,
-                    scaleLabel:{
-                        labelString: "Concentration - C (M)",
+                    title: {
+                        text: "Concentration - C (M)",
                         display: true,
-                        fontSize: 14
+                        font: {
+                            size: 14
+                        }
                     },
-                }],
-                xAxes: [{
-                    scaleLabel: {
-                        labelString: "Time - t (s)",
+                },
+                x: {
+                    title: {
+                        text: "Time - t (s)",
                         display: true,
-                        fontSize: 14
+                        font: {
+                            size: 14
+                        }
                     },
-                }]
+                }
             },
-            title: {
-                text: 'Concentration of each substance during the chemical reaction',
-                display: true,
-                position: 'top',
-                fontSize: 16,
+            plugins: {
+                title: {
+                    text: 'Concentration of each substance during the chemical reaction',
+                    display: true,
+                    position: 'top',
+                    font: {
+                        size: 16
+                    }
+                }
+            }
+        }
+    });
+}
+
+function PlotConcBars(){
+    var ctx = document.getElementById('myConcBars').getContext('2d');
+    var datasets = [];
+    var index = 0;
+    datasets[index] = {
+        type: 'bar',
+        label: reactants[0].name,
+        data: [reactants[0].conc[0], reactants[0].conc[end_it-1]],
+        borderColor: colour[index%colour.length],
+        backgroundColor: colour[index%colour.length],
+    }
+    index++;
+    for (var i = 1; i < Object.keys(reactants).length; i++){
+        datasets[index] = {
+            label: reactants[i].name,
+            data: [reactants[i].conc[0], reactants[i].conc[end_it-1]],
+            borderColor: colour[index%colour.length],
+            backgroundColor: colour[index%colour.length],
+        }
+        index++;
+    }
+    for (var i = 0; i < Object.keys(products).length; i++){
+        datasets[index] = {
+            label: products[i].name,
+            data: [products[i].conc[0], products[i].conc[end_it-1]],
+            borderColor: colour[index%colour.length],
+            backgroundColor: colour[index%colour.length],
+        }
+        index++;
+    }
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            datasets: datasets,
+            labels: ["Initial", "Final"]
+        },
+        options: {
+            elements: {
+                point:{
+                    radius: 0
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        text: "Concentration - C (M)",
+                        display: true,
+                        font: {
+                            size: 14
+                        }
+                    },
+                },
+                x: {
+                    title: {
+                        text: "State",
+                        display: true,
+                        font: {
+                            size: 14
+                        }
+                    },
+                }
+            },
+            plugins: {
+                title: {
+                    text: 'Concentration of each substance in the initial and the final state',
+                    display: true,
+                    position: 'top',
+                    font: {
+                        size: 16
+                    }
+                }
             }
         }
     });
@@ -220,12 +409,13 @@ function PlotU(){
     var datasets = [];
     var index = 0;
     datasets[index] = {
-        type: 'line',
+        type: 'scatter',
         label: "U1",
         data: _U1,
         borderColor: colour[index%colour.length],
         backgroundColor: colour[index%colour.length],
         fill: false,
+        showLine: true
     }
     index++;
     datasets[index] = {
@@ -234,10 +424,11 @@ function PlotU(){
         borderColor: colour[index%colour.length],
         backgroundColor: colour[index%colour.length],
         fill: false,
+        showLine: true
     }
     index++;
     var myChart = new Chart(ctx, {
-        type: 'line',
+        type: 'scatter',
         data: {
             datasets: datasets,
             labels: time
@@ -249,27 +440,159 @@ function PlotU(){
                 }
             },
             scales: {
-                yAxes: [{
+                y: {
                     beginAtZero: true,
-                    scaleLabel:{
-                        labelString: "Reaction Rate (M/s)",
+                    title: {
+                        text: "Reaction Rate (M/s)",
                         display: true,
-                        fontSize: 14
+                        font: {
+                            size: 14
+                        }
                     },
-                }],
-                xAxes: [{
-                    scaleLabel: {
-                        labelString: "Time - t (s)",
+                },
+                x: {
+                    title: {
+                        text: "Time - t (s)",
                         display: true,
-                        fontSize: 14
+                        font: {
+                            size: 14
+                        }
                     },
-                }]
+                }
             },
-            title: {
-                text: 'Reaction rate of both sides during the chemical reaction',
-                display: true,
-                position: 'top',
-                fontSize: 16,
+            plugins: {
+                title: {
+                    text: 'Reaction rate of both sides during the chemical reaction',
+                    display: true,
+                    position: 'top',
+                    font: {
+                        size: 16
+                    }
+                }
+            }
+        }
+    });
+}
+
+function PlotDt(){
+    var ctx = document.getElementById('myDtChart').getContext('2d');
+    var datasets = [];
+    var iters = Array.from({length: end_it}, (_, i) => i + 1);
+    var index = 0;
+    datasets[index] = {
+        type: 'scatter',
+        label: "dt",
+        data: _dt,
+        borderColor: colour[index%colour.length],
+        backgroundColor: colour[index%colour.length],
+        fill: false,
+        showLine: true
+    }
+    index++;
+    var myChart = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+            datasets: datasets,
+            labels: iters
+        },
+        options: {
+            elements: {
+                point:{
+                    radius: 0
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        text: "dt (s)",
+                        display: true,
+                        font: {
+                            size: 14
+                        }
+                    },
+                },
+                x: {
+                    title: {
+                        text: "Iteration",
+                        display: true,
+                        font: {
+                            size: 14
+                        }
+                    },
+                }
+            },
+            plugins: {
+                title: {
+                    text: 'dt during the chemical reaction',
+                    display: true,
+                    position: 'top',
+                    font: {
+                        size: 16
+                    }
+                }
+            }
+        }
+    });
+}
+
+function PlotTotalU(){
+    var ctx = document.getElementById('myTotalUChart').getContext('2d');
+    var datasets = [];
+    var iters = Array.from({length: end_it}, (_, i) => i + 1);
+    var index = 0;
+    datasets[index] = {
+        type: 'scatter',
+        label: "Total U",
+        data: _U,
+        borderColor: colour[index%colour.length],
+        backgroundColor: colour[index%colour.length],
+        fill: false,
+        showLine: true
+    }
+    index++;
+    var myChart = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+            datasets: datasets,
+            labels: iters
+        },
+        options: {
+            elements: {
+                point:{
+                    radius: 0
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        text: "Total Reaction Rate (M/s)",
+                        display: true,
+                        font: {
+                            size: 14
+                        }
+                    },
+                },
+                x: {
+                    title: {
+                        text: "Iteration",
+                        display: true,
+                        font: {
+                            size: 14
+                        }
+                    },
+                }
+            },
+            plugins: {
+                title: {
+                    text: 'Total Reaction Rate during the chemical reaction',
+                    display: true,
+                    position: 'top',
+                    font: {
+                        size: 16
+                    }
+                }
             }
         }
     });
