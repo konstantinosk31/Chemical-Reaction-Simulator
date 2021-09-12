@@ -1,15 +1,22 @@
-body{
-    background-color: lightgray;
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #555;
+    color: white;
+    padding: 15px;
 }
+.navbar-header {
+    float: left;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+}
+.navbar-brand {float:none;}
 
 button{
     margin: 8px 4px;
-}
-
-footer{
-    line-height: 1;
-    margin-top: 140px;
-    margin-bottom: 28px;
 }
 
 canvas{
