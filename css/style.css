@@ -1,10 +1,10 @@
 footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: #555;
-    color: white;
+    line-height: 1;
+    padding-top: 10px;
+    padding-bottom: 1px;
+    margin-top: 100px;
+    background-color: #e3f2fd;;
+    color: black;
 }
 .navbar-header {
     float: left;
@@ -23,4 +23,10 @@ canvas{
     max-height : 375px;
     margin : 1em;
     border : 1px solid gray;
+}
+
+.container-canvas {
+    margin-right: auto;
+    margin-left: auto;
+    width: 800px;
 }
