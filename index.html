@@ -26,59 +26,83 @@
         <link rel="shortcut icon" href="favicon.ico" type="image/ico" />
         <link rel="stylesheet" type="text/css" href="css/style.css"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- [Bootstrap] -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+        <!-- [/Bootstrap] -->
+
+        <link href="css/style.css" rel="stylesheet">
     </head>
-    <body onload="Load()"> <center>
+    <body onload="Load()">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Chemical Reaction Simulator</a>
+            </div>
+        </nav>
 
-        <h1>Welcome to the Chemical Reaction Simulator!</h1>
-        <h3>Insert a chemical reaction and the website will output n(t), C(t) (if appropriate) and U(t) plots by simulating the reaction.</h3>
-        <p>If a substance doesn't have a coefficient enter "1" as its coefficient.<br>For now we assume that all reactions are simple.</p>
-
-        <div id="reactants">
-
-        </div>
-        <div>
-            <button onclick="AddElement(true);">Add Reactant</button>
-            <button onclick="RemoveElement(true);">Remove Reactant</button>
-            <select onclick="InitIrreversible(this.selectedIndex);">
-                <option value="<=>">⇔</option>
-                <option value="->">→</option>
-            </select>
-            <button onclick="AddElement(false);">Add Product</button>
-            <button onclick="RemoveElement(false);">Remove Product</button>
-        </div>
-        <div id="products">
-        </div>
-        <div>
-            <br>
-            <label>Is the container closed?</label>
-            <input type="checkbox" id="closedContatinerCheckbox" onclick="InitV(this.checked);" checked>
-        </div>
-        <div id="volume">
-
-        </div><br>
-        <div id="constants">
-
-        </div><br>
-        <p id="simulation">
-
-        </p>
-        <div id="charts">
-
-        </div>
-    </center></body>
-    <footer><center><small>
-        Copyright 2021 Konstantinos Kritharidis<br><br>
-
-        Special Thanks to Richard Bariampa.<br><br>
-
-        Contribute to Chemical Reaction Simulator on <a href="https://github.com/konstantinosk31/Chemical-Reaction-Simulator" target="_blank">GitHub</a>.<br><br>
+        <br />
         
-        Contact details: Konstantinos Kritharidis (konstantinosk31) &lt;konstantinosk31@gmail.com&gt;.
-    </small></center></footer>
-    <!-- [chart.js] -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.js"></script>
-    <!-- [/chart.js]-->
-    <script src="js/input.js"></script>
-    <script src="js/simulate.js"></script>
-    <script src="js/plot.js"></script>
+        <div class="container-fluid text-center">
+            <div class="row content">
+                <div class="col-sm-12">
+                    <h1>Welcome to the Chemical Reaction Simulator!</h1>
+                    <h3>Insert a chemical reaction and the website will output n(t), C(t) (if appropriate) and U(t) plots by simulating the reaction.</h3>
+                    <p>If a substance doesn't have a coefficient enter "1" as its coefficient.<br>For now we assume that all reactions are simple.</p>
+                </div>
+            </div>
+        </div>
+
+        <br />
+
+        <div class="container-fluid text-center">
+            <div class="row content">
+                <div class="col-sm-12">
+                    <div id="reactants"></div>
+
+                    <div>
+                        <button type="button" class="btn btn-primary" onclick="AddElement(true);">Add Reactant</button>
+                        <button type="button" class="btn btn-primary" onclick="RemoveElement(true);">Remove Reactant</button>
+                        <select onclick="InitIrreversible(this.selectedIndex);">
+                            <option value="<=>">⇔</option>
+                            <option value="->">→</option>
+                        </select>
+                        <button type="button" class="btn btn-primary" onclick="AddElement(false);">Add Product</button>
+                        <button type="button" class="btn btn-primary" onclick="RemoveElement(false);">Remove Product</button>
+                    </div>
+
+                    <div id="products"></div>
+                    
+                    <div>
+                        <br>
+                        <label>Is the container closed?</label>
+                        <input type="checkbox" id="closedContatinerCheckbox" onclick="InitV(this.checked);" checked>
+                    </div>
+
+                    <div id="volume"></div>
+                    
+                    <br />
+                    
+                    <div id="constants"></div>
+                    
+                    <br />
+                    
+                    <p id="simulation"></p>
+                    
+                    <div id="charts" class="container-canvas"></div>
+                </div>
+            </div>
+        </div>
+        <footer class="container-fluid text-center"><small>
+            <p>Copyright 2021 Konstantinos Kritharidis</p>
+            <p>Special Thanks to Richard Bariampa</p>
+            <p>Contribute to Chemical Reaction Simulator on <a href="https://github.com/konstantinosk31/Chemical-Reaction-Simulator" target="_blank">GitHub</a></p>
+            <p>Contact details: Konstantinos Kritharidis (konstantinosk31) &lt;konstantinosk31 [at] gmail [dot] com&gt;</p>
+        </small></footer>
+        <!-- [chart.js] -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.js"></script>
+        <!-- [/chart.js]-->
+        <script src="js/input.js"></script>
+        <script src="js/simulate.js"></script>
+        <script src="js/plot.js"></script>
+    </body>
 </html>
