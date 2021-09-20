@@ -235,9 +235,9 @@ function AddElement(isReactant = true) {
     name.type = 'text';
     name.id = "name"+id;
     if(isReactant)
-        name.placeholder = 'Reactant Substance name';
+        name.placeholder = 'Reactant Name';
     else
-        name.placeholder = 'Product Substance name';
+        name.placeholder = 'Product Name';
     let state = document.createElement('select');
     state.innerHTML = '<option value="(g)">Gas</option><option value="(l)">Liquid</option><option value="(s)">Solid</option><option value="(aq)">Aqua</option>';
     state.id = "state"+id;
