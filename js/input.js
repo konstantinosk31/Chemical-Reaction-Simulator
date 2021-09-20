@@ -259,13 +259,15 @@ function AddElement(isReactant = true) {
     name.onchange = InitSubstances;
     state.onchange = InitSubstances;
     mol.onchange = InitSubstances;
+
+    InitSubstances();
 }
 
 function RemoveElement(isReactant = true) {
     if (isReactant) {
         let parent = document.getElementById('reactants');
         let n = parent.childElementCount;
-        if(n == Object.keys(reactants).length) reactants.pop();
+        reactants.pop();
         lastReactant--;
         parent.removeChild(parent.lastChild);
         if(n == 1) AddElement(true);
@@ -274,7 +276,7 @@ function RemoveElement(isReactant = true) {
     else {
         let parent = document.getElementById('products');
         let n = parent.childElementCount;
-        if(n == Object.keys(products).length) products.pop();
+        products.pop();
         lastProduct--;
         parent.removeChild(parent.lastChild);
         if(n == 1) AddElement(false);
