@@ -215,12 +215,10 @@ function AddElement(isReactant = true) {
     var id = "";
     if(isReactant){
         lastReactant++;
-        console.log("reactants:", lastReactant);
         id = "r"+lastReactant.toString();
     }
     else{
         lastProduct++;
-        console.log("products:", lastProduct)
         id = "p"+lastProduct.toString();
     }
     let coeff = document.createElement('input');
@@ -264,19 +262,22 @@ function AddElement(isReactant = true) {
 }
 
 function RemoveElement(isReactant = true) {
-    if ((isReactant && reactants.length <= 1) || (!isReactant && products.length <= 1))
-        return;
-    
     if (isReactant) {
-        reactants.pop();
+        let parent = document.getElementById('reactants');
+        let n = parent.childElementCount;
+        if(n == Object.keys(reactants).length) reactants.pop();
         lastReactant--;
-        document.getElementById('reactants').removeChild(document.getElementById('reactants').lastChild);
+        parent.removeChild(parent.lastChild);
+        if(n == 1) AddElement(true);
         InitSubstances();
     }
     else {
-        products.pop();
+        let parent = document.getElementById('products');
+        let n = parent.childElementCount;
+        if(n == Object.keys(products).length) products.pop();
         lastProduct--;
-        document.getElementById('products').removeChild(document.getElementById('products').lastChild);
+        parent.removeChild(parent.lastChild);
+        if(n == 1) AddElement(false);
         InitSubstances();
     }
 }
