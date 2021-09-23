@@ -6,13 +6,16 @@ footer {
     background-color: #e3f2fd;;
     color: black;
 }
-.navbar-header {
+
+.container-fluid{
     float: left;
-    padding: 10px;
-    text-align: center;
-    width: 100%;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
+
 .navbar-brand {float:none;}
+
+.navbar-nav {float:none;}
 
 button{
     margin: 8px 4px;
