@@ -30,6 +30,10 @@ _U1 = [];
 _U2 = [];
 _U = [];
 
+var first_react = 0; //first reactant that changes concentration
+var first_prod = 0; //first product that changes concentration
+var show_concentrations = 1;
+
 function Load() {
     AddElement(true);
     AddElement(false);
@@ -39,16 +43,20 @@ function Load() {
 
 function calculateU1(it){
     var val = K1;
-    for (var i = 0; i < Object.keys(reactants).length; i++)
-        val *= (reactants[i].conc[it]**reactants[i].coeff);
+    for (var i = 0; i < Object.keys(reactants).length; i++){
+        if(!closed_container && reactants[i].state == "(g)") val = 0;
+        else val *= (reactants[i].conc[it]**reactants[i].coeff);
+    }
     _U1[it] = val;
     return val;
 }
 
 function calculateU2(it){
     var val = K2;
-    for (var i = 0; i < Object.keys(products).length; i++)
-        val *= (products[i].conc[it]**products[i].coeff);
+    for (var i = 0; i < Object.keys(products).length; i++){
+        if(!closed_container && products[i].state == "(g)") val = 0;
+        else val *= (products[i].conc[it]**products[i].coeff);
+    }
     _U2[it] = val;
     return val;
 }
@@ -79,11 +87,27 @@ function InitVars(){
     }
 }
 
+function FindFirst(){ //finds first_react and first_prod
+    first_react = 0; //first reactant that changes concentration
+    first_prod = 0; //first product that changes concentration
+    for (first_react = 0; first_react < Object.keys(reactants).length; first_react++){
+        if(ChangesConc(reactants[first_react])) break;
+    }
+    if(first_react == Object.keys(reactants).length){
+        for (first_prod = 0; first_prod < Object.keys(products).length; first_prod++){
+            if(ChangesConc(products[first_prod])) break;
+        }
+    }
+    show_concentrations = closed_container;
+    if(first_react == Object.keys(reactants).length && first_prod == Object.keys(products).length) show_concentrations = 0;
+}
+
 function Simulate() {
     //console.log('Hello world');
     if(!IsReady()) return;
     InitConc();
     InitVars()
+    FindFirst();
     myDebug();
     var it = 0;
     var PercentageOfChange = 1;
@@ -176,6 +200,7 @@ function Simulate() {
     }
     it += 1;
     end_it = it;
+    FindFirst();
     FinalizeSimulation();
     PlotCharts();
 }
@@ -224,12 +249,15 @@ function FinalizeSimulation(){
     for (var i = 0; i < Object.keys(products).length; i++){
         text += " | " + products[i].name + ": " + products[i].mol[end_it-1].toString();
     }
-    if(closed_container){
-        text += ".\nConcentrations"
+    if(show_concentrations){
+        console.log("Showing Concentrations");
+        text += ".\nConcentrations";
         for (var i = 0; i < Object.keys(reactants).length; i++){
+            if(!ChangesConc(reactants[i])) continue;
             text += " | " + reactants[i].name + ": " + reactants[i].conc[end_it-1].toString();
         }
         for (var i = 0; i < Object.keys(products).length; i++){
+            if(!ChangesConc(products[i])) continue;
             text += " | " + products[i].name + ": " + products[i].conc[end_it-1].toString();
         }
     }

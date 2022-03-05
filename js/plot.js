@@ -28,7 +28,7 @@ function PlotCharts(){
     InitCharts();
     PlotMoles();
     PlotMolBars();
-    if(closed_container == 1){
+    if(show_concentrations){
         PlotConcentrations();
         PlotConcBars();
     }
@@ -247,34 +247,54 @@ function PlotMolBars(){
 function PlotConcentrations(){
     var ctx = document.getElementById('myConcChart').getContext('2d');
     var datasets = [];
-    var index = 0;
-    datasets[index] = {
-        type: 'scatter',
-        label: reactants[0].name,
-        data: reactants[0].conc,
-        borderColor: colour[index%colour.length],
-        backgroundColor: colour[index%colour.length],
-        fill: false,
-        showLine: true
-    }
-    index++;
-    for (var i = 1; i < Object.keys(reactants).length; i++){
+    var index = 0, colour_index = (first_react != Object.keys(reactants).length ? first_react : first_react+first_prod);
+    if(first_react != Object.keys(reactants).length){
         datasets[index] = {
-            label: reactants[i].name,
-            data: reactants[i].conc,
-            borderColor: colour[index%colour.length],
-            backgroundColor: colour[index%colour.length],
+            type: 'scatter',
+            label: reactants[first_react].name,
+            data: reactants[first_react].conc,
+            borderColor: colour[colour_index%colour.length],
+            backgroundColor: colour[colour_index%colour.length],
             fill: false,
             showLine: true
         }
-        index++;
     }
-    for (var i = 0; i < Object.keys(products).length; i++){
+    else{
+        if(first_prod == Object.keys(products).length) return; //although we should never get here
+        datasets[index] = {
+            type: 'scatter',
+            label: products[first_prod].name,
+            data: products[first_prod].conc,
+            borderColor: colour[colour_index%colour.length],
+            backgroundColor: colour[colour_index%colour.length],
+            fill: false,
+            showLine: true
+        }
+    }
+    index++;
+    if(first_react != Object.keys(reactants).length){
+        for (var i = first_react+1; i < Object.keys(reactants).length; i++){
+            colour_index++;
+            if(!ChangesConc(reactants[i])) continue;
+            datasets[index] = {
+                label: reactants[i].name,
+                data: reactants[i].conc,
+                borderColor: colour[colour_index%colour.length],
+                backgroundColor: colour[colour_index%colour.length],
+                fill: false,
+                showLine: true
+            }
+            index++;
+        }
+    }
+    for (var i = (first_react != Object.keys(reactants).length ? first_prod : first_prod+1); i < Object.keys(products).length; i++){
+        colour_index++;
+        if(!ChangesConc(products[i])) continue;
         datasets[index] = {
             label: products[i].name,
             data: products[i].conc,
-            borderColor: colour[index%colour.length],
-            backgroundColor: colour[index%colour.length],
+            borderColor: colour[colour_index%colour.length],
+            backgroundColor: colour[colour_index%colour.length],
             fill: false,
             showLine: true
         }
@@ -330,30 +350,48 @@ function PlotConcentrations(){
 function PlotConcBars(){
     var ctx = document.getElementById('myConcBars').getContext('2d');
     var datasets = [];
-    var index = 0;
-    datasets[index] = {
-        type: 'bar',
-        label: reactants[0].name,
-        data: [reactants[0].conc[0], reactants[0].conc[end_it-1]],
-        borderColor: colour[index%colour.length],
-        backgroundColor: colour[index%colour.length],
+    var index = 0, colour_index = (first_react != Object.keys(reactants).length ? first_react : first_react+first_prod);
+    if(first_react != Object.keys(reactants).length){
+        datasets[index] = {
+            type: 'bar',
+            label: reactants[first_react].name,
+            data: [reactants[first_react].conc[0], reactants[first_react].conc[end_it-1]],
+            borderColor: colour[colour_index%colour.length],
+            backgroundColor: colour[colour_index%colour.length],
+        }
+    }
+    else{
+        if(first_prod == Object.keys(products).length) return; //although we should never get here
+        datasets[index] = {
+            type: 'bar',
+            label: products[first_prod].name,
+            data: [products[first_prod].conc[0], products[first_prod].conc[end_it-1]],
+            borderColor: colour[colour_index%colour.length],
+            backgroundColor: colour[colour_index%colour.length],
+        }
     }
     index++;
-    for (var i = 1; i < Object.keys(reactants).length; i++){
-        datasets[index] = {
-            label: reactants[i].name,
-            data: [reactants[i].conc[0], reactants[i].conc[end_it-1]],
-            borderColor: colour[index%colour.length],
-            backgroundColor: colour[index%colour.length],
+    if(first_react != Object.keys(reactants).length){
+        for (var i = first_react+1; i < Object.keys(reactants).length; i++){
+            colour_index++;
+            if(!ChangesConc(reactants[i])) continue;
+            datasets[index] = {
+                label: reactants[i].name,
+                data: [reactants[i].conc[0], reactants[i].conc[end_it-1]],
+                borderColor: colour[colour_index%colour.length],
+                backgroundColor: colour[colour_index%colour.length],
+            }
+            index++;
         }
-        index++;
     }
-    for (var i = 0; i < Object.keys(products).length; i++){
+    for (var i = (first_react != Object.keys(reactants).length ? first_prod : first_prod+1); i < Object.keys(products).length; i++){
+        colour_index++;
+        if(!ChangesConc(products[i])) continue;
         datasets[index] = {
             label: products[i].name,
             data: [products[i].conc[0], products[i].conc[end_it-1]],
-            borderColor: colour[index%colour.length],
-            backgroundColor: colour[index%colour.length],
+            borderColor: colour[colour_index%colour.length],
+            backgroundColor: colour[colour_index%colour.length],
         }
         index++;
     }
