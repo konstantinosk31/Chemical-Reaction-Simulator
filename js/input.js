@@ -21,6 +21,7 @@ MAXN = 10;
 MAXIT = 2*10**5;
 INF = 10**9;
 
+simple = 1;
 irreversible = 1;
 K1 = NaN;
 K2 = NaN;
@@ -34,13 +35,13 @@ products = [];
 
 function IsReady(){
     for (var i = 0; i < Object.keys(reactants).length; i++){
-        if(Number.isNaN(reactants[i].mol[0]) || Number.isNaN(reactants[i].coeff) || reactants[i].name == "" || reactants[i].state == ""){
+        if(Number.isNaN(reactants[i].mol[0]) || Number.isNaN(reactants[i].coeff) || reactants[i].name == "" || reactants[i].state == "" || Number.isNaN(reactants[i].RRC)){
             console.log("reactants not ready");
             return false;
         }
     }
     for (var i = 0; i < Object.keys(products).length; i++){
-        if(Number.isNaN(products[i].mol[0]) || Number.isNaN(products[i].coeff) || products[i].name == "" || products[i].state == ""){
+        if(Number.isNaN(products[i].mol[0]) || Number.isNaN(products[i].coeff) || products[i].name == "" || products[i].state == "" || Number.isNaN(products[i].RRC)){
             console.log("products not ready");
             return false;
         }
@@ -121,6 +122,67 @@ function InitIrreversible(option){
     Simulate();
 }
 
+function addRRC(id){
+    element = document.getElementById(id);
+    let RRCLabel = document.createElement('label');
+    RRCLabel.innerText = 'Reaction Rate Coefficient: ';
+    let RRC = document.createElement('input');
+    RRC.type = 'number';
+    RRC.step = "any";
+    RRC.id = "RRC"+id;
+    RRC.onchange = () => {
+        InitSubstances();
+        Simulate();
+    };
+    element.removeChild(element.lastChild);
+    element.appendChild(RRCLabel);
+    element.appendChild(RRC);
+    element.appendChild(document.createElement('br'));
+    //? do I also need to change the document?
+    document.getElementById(id).replaceWith(element);
+}
+
+function InitSimple(checked){
+    let wasSimpleBefore = simple;
+    simple = checked;
+    if(simple){
+        if(!wasSimpleBefore){
+            for (var i = 0; i < Object.keys(reactants).length; i++){
+                var id = "r" + i.toString();
+                el = document.getElementById(id);
+                el.removeChild(el.lastChild);
+                el.removeChild(el.lastChild);
+                el.removeChild(el.lastChild);
+                el.appendChild(document.createElement('br'));
+            }
+            for (var i = 0; i < Object.keys(products).length; i++){
+                var id = "p" + i.toString();
+                el = document.getElementById(id);
+                el.removeChild(el.lastChild);
+                el.removeChild(el.lastChild);
+                el.removeChild(el.lastChild);
+                el.appendChild(document.createElement('br'));
+            }
+            wasSimpleBefore = true;
+        }
+        InitSubstances();
+        Simulate();
+        return;
+    }
+    wasSimpleBefore = false;
+    
+    for (var i = 0; i < Object.keys(reactants).length; i++){
+        var id = "r" + i.toString();
+        addRRC(id);
+    }
+    for (var i = 0; i < Object.keys(products).length; i++){
+        var id = "p" + i.toString();
+        addRRC(id);
+    }
+    InitSubstances();
+    Simulate();
+}
+
 function InitV(checked){
     let wasClosedBefore = closed_container;
     closed_container = checked;
@@ -130,7 +192,7 @@ function InitV(checked){
             document.getElementById('volume').removeChild(document.getElementById('volume').lastChild);
             wasClosedBefore = false;
         }
-        document.getElementById("closedContatinerCheckbox").onchange = Simulate;
+        Simulate();
         return;
     }
     wasClosedBefore = true;
@@ -149,7 +211,7 @@ function InitV(checked){
     element.appendChild(VInput);
     element.appendChild(document.createElement('br'));
     document.getElementById('volume').appendChild(element);
-    document.getElementById("closedContatinerCheckbox").onchange = Simulate;
+    Simulate();
 }
 
 function ChangesConc(substance){
@@ -186,12 +248,15 @@ function InitSubstances(){
         var name = document.getElementById("name"+"r"+id);
         var state = document.getElementById("state"+"r"+id);
         var mol = document.getElementById("mol"+"r"+id);
+        var RRC;
+        if(!simple) RRC = document.getElementById("RRC"+"r"+id);
         reactants[i] = {
             coeff: parseFloat(coeff.value),
             name: name.value,
             state: state.value,
             mol: [parseFloat(mol.value)],
-            conc: [0]
+            conc: [0],
+            RRC: (simple ? parseFloat(coeff.value) : parseFloat(RRC.value))
         };
     }
     for (var i = 0; i <= lastProduct; i++){
@@ -200,12 +265,15 @@ function InitSubstances(){
         var name = document.getElementById("name"+"p"+id);
         var state = document.getElementById("state"+"p"+id);
         var mol = document.getElementById("mol"+"p"+id);
+        var RRC;
+        if(!simple) RRC = document.getElementById("RRC"+"p"+id);
         products[i] = {
             coeff: parseFloat(coeff.value),
             name: name.value,
             state: state.value,
             mol: [parseFloat(mol.value)],
-            conc: [0]
+            conc: [0],
+            RRC: (simple ? parseFloat(coeff.value) : parseFloat(RRC.value))
         };
     }
     Simulate();
@@ -247,6 +315,7 @@ function AddElement(isReactant = true) {
     mol.id = "mol"+id;
 
     let element = document.createElement('div');
+    element.id = id;
     element.appendChild(coeff);
     element.appendChild(name);
     element.appendChild(state);
@@ -254,6 +323,8 @@ function AddElement(isReactant = true) {
     element.appendChild(mol);
     element.appendChild(document.createElement('br'));
     document.getElementById((isReactant) ? 'reactants' : 'products').appendChild(element);
+
+    if(!simple) addRRC(id);
     
     coeff.onchange = InitSubstances;
     name.onchange = InitSubstances;

@@ -52,7 +52,11 @@
                 <div class="col-sm-12">
                     <h1>Welcome to the Chemical Reaction Simulator!</h1>
                     <h3>Insert a chemical reaction and the website will output n(t), C(t) (if appropriate) and U(t) plots by simulating the reaction.</h3>
-                    <p>If a substance doesn't have a coefficient enter "1" as its coefficient.<br>For now we assume that all reactions are simple.</p>
+                    <p>If a substance doesn't have a coefficient enter "1" as its coefficient.</p>
+                    <div>
+                        <label>Is the reaction simple?</label>
+                        <input type="checkbox" id="simpleReactionCheckbox" onclick="InitSimple(this.checked);" checked>
+                    </div>
                 </div>
             </div>
         </div>
