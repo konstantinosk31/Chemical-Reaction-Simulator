@@ -35,13 +35,13 @@ products = [];
 
 function IsReady(){
     for (var i = 0; i < Object.keys(reactants).length; i++){
-        if(Number.isNaN(reactants[i].mol[0]) || Number.isNaN(reactants[i].coeff) || reactants[i].name == "" || reactants[i].state == "" || Number.isNaN(reactants[i].RRC)){
+        if(Number.isNaN(reactants[i].mol[0]) || Number.isNaN(reactants[i].coeff) || reactants[i].name == "" || reactants[i].state == "" || Number.isNaN(reactants[i].order)){
             console.log("reactants not ready");
             return false;
         }
     }
     for (var i = 0; i < Object.keys(products).length; i++){
-        if(Number.isNaN(products[i].mol[0]) || Number.isNaN(products[i].coeff) || products[i].name == "" || products[i].state == "" || Number.isNaN(products[i].RRC)){
+        if(Number.isNaN(products[i].mol[0]) || Number.isNaN(products[i].coeff) || products[i].name == "" || products[i].state == "" || Number.isNaN(products[i].order)){
             console.log("products not ready");
             return false;
         }
@@ -122,21 +122,21 @@ function InitIrreversible(option){
     Simulate();
 }
 
-function addRRC(id){
+function addOrder(id){
     element = document.getElementById(id);
-    let RRCLabel = document.createElement('label');
-    RRCLabel.innerText = 'Reaction Rate Coefficient: ';
-    let RRC = document.createElement('input');
-    RRC.type = 'number';
-    RRC.step = "any";
-    RRC.id = "RRC"+id;
-    RRC.onchange = () => {
+    let OrderLabel = document.createElement('label');
+    OrderLabel.innerText = 'Order of Substance: ';
+    let order = document.createElement('input');
+    order.type = 'number';
+    order.step = "any";
+    order.id = "order"+id;
+    order.onchange = () => {
         InitSubstances();
         Simulate();
     };
     element.removeChild(element.lastChild);
-    element.appendChild(RRCLabel);
-    element.appendChild(RRC);
+    element.appendChild(OrderLabel);
+    element.appendChild(order);
     element.appendChild(document.createElement('br'));
     //? do I also need to change the document?
     document.getElementById(id).replaceWith(element);
@@ -173,11 +173,11 @@ function InitSimple(checked){
     
     for (var i = 0; i < Object.keys(reactants).length; i++){
         var id = "r" + i.toString();
-        addRRC(id);
+        addOrder(id);
     }
     for (var i = 0; i < Object.keys(products).length; i++){
         var id = "p" + i.toString();
-        addRRC(id);
+        addOrder(id);
     }
     InitSubstances();
     Simulate();
@@ -248,15 +248,15 @@ function InitSubstances(){
         var name = document.getElementById("name"+"r"+id);
         var state = document.getElementById("state"+"r"+id);
         var mol = document.getElementById("mol"+"r"+id);
-        var RRC;
-        if(!simple) RRC = document.getElementById("RRC"+"r"+id);
+        var order;
+        if(!simple) order = document.getElementById("order"+"r"+id);
         reactants[i] = {
             coeff: parseFloat(coeff.value),
             name: name.value,
             state: state.value,
             mol: [parseFloat(mol.value)],
             conc: [0],
-            RRC: (simple ? parseFloat(coeff.value) : parseFloat(RRC.value))
+            order: (simple ? parseFloat(coeff.value) : parseFloat(order.value))
         };
     }
     for (var i = 0; i <= lastProduct; i++){
@@ -265,15 +265,15 @@ function InitSubstances(){
         var name = document.getElementById("name"+"p"+id);
         var state = document.getElementById("state"+"p"+id);
         var mol = document.getElementById("mol"+"p"+id);
-        var RRC;
-        if(!simple) RRC = document.getElementById("RRC"+"p"+id);
+        var order;
+        if(!simple) order = document.getElementById("order"+"p"+id);
         products[i] = {
             coeff: parseFloat(coeff.value),
             name: name.value,
             state: state.value,
             mol: [parseFloat(mol.value)],
             conc: [0],
-            RRC: (simple ? parseFloat(coeff.value) : parseFloat(RRC.value))
+            order: (simple ? parseFloat(coeff.value) : parseFloat(order.value))
         };
     }
     Simulate();
@@ -324,7 +324,7 @@ function AddElement(isReactant = true) {
     element.appendChild(document.createElement('br'));
     document.getElementById((isReactant) ? 'reactants' : 'products').appendChild(element);
 
-    if(!simple) addRRC(id);
+    if(!simple) addOrder(id);
     
     coeff.onchange = InitSubstances;
     name.onchange = InitSubstances;

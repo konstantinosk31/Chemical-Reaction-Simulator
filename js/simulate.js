@@ -45,7 +45,7 @@ function calculateU1(it){
     var val = K1;
     for (var i = 0; i < Object.keys(reactants).length; i++){
         if(!closed_container && reactants[i].state == "(g)") val = 0;
-        else val *= (reactants[i].conc[it]**reactants[i].RRC);
+        else val *= (reactants[i].conc[it]**reactants[i].order);
     }
     _U1[it] = val;
     return val;
@@ -55,7 +55,7 @@ function calculateU2(it){
     var val = K2;
     for (var i = 0; i < Object.keys(products).length; i++){
         if(!closed_container && products[i].state == "(g)") val = 0;
-        else val *= (products[i].conc[it]**products[i].RRC);
+        else val *= (products[i].conc[it]**products[i].order);
     }
     _U2[it] = val;
     return val;
